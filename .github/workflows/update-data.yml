@@ -1,0 +1,38 @@
+name: Update Stock Data
+
+on:
+  schedule:
+    - cron: '0 22 * * 1-5'  # 10 PM UTC Mon-Fri (after US market close)
+  workflow_dispatch:           # Triggered by the Refresh button in the web app
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: claude/sp500-momentum-comparison-x5jI4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+
+      - name: Run update script
+        run: python scripts/update_data.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data.json
+          git diff --staged --quiet || git commit -m "chore: update stock data [skip ci]"
+          git push origin HEAD
