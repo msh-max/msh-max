@@ -53,15 +53,22 @@ def download(tickers):
         for attempt in range(3):
             try:
                 d = yf.download(batch, period="2y", auto_adjust=True,
-                                progress=False, threads=True)
+                                progress=False)
+                if d.empty:
+                    print(f"  batch {i//bs+1}: empty response, skipping")
+                    break
                 if isinstance(d.columns, pd.MultiIndex):
                     frames.append(d["Close"])
                 else:
-                    df = d[["Close"]]; df.columns = batch[:1]; frames.append(df)
+                    df = d[["Close"]]
+                    df.columns = batch[:1]
+                    frames.append(df)
                 break
             except Exception as e:
-                print(f"  batch {i} attempt {attempt}: {e}")
-                time.sleep(3)
+                print(f"  batch {i//bs+1} attempt {attempt+1}: {e}")
+                time.sleep(5)
+    if not frames:
+        raise RuntimeError("All download batches failed — check yfinance/network")
     p = pd.concat(frames, axis=1)
     p = p.loc[:, ~p.columns.duplicated()].dropna(axis=1, how="all")
     p.index = pd.to_datetime(p.index)

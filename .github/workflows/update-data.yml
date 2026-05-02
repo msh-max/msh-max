@@ -16,23 +16,24 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: claude/sp500-momentum-comparison-x5jI4
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: pip
 
       - name: Install dependencies
-        run: pip install yfinance pandas numpy
+        run: pip install "yfinance>=0.2.50" pandas numpy
 
       - name: Run update script
         run: python scripts/update_data.py
 
-      - name: Commit updated data
+      - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/data.json
-          git diff --staged --quiet || git commit -m "chore: update stock data [skip ci]"
-          git push origin HEAD
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: update stock data [skip ci]"
+          git push origin HEAD:refs/heads/claude/sp500-momentum-comparison-x5jI4
