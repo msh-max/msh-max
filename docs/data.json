@@ -2,7 +2,7 @@
   "last_updated": "2026-04-12 15:09:00 UTC",
   "signal_date": "2026-03-31",
   "latest_price_date": "2026-04-10",
-  "universe_size": 333,
+  "universe_size": 217,
   "usd_to_sar": 3.75,
   "spy": {
     "price": 679.46,
@@ -12,190 +12,112 @@
   },
   "strategy": {
     "name": "9-1 Month Momentum",
-    "description": "Rank S&P 500 (Shariah-compliant only) by cumulative return from t-10 months to t-1 month (skip last month). Buy top K equal-weighted. Hold for 1 month. If SPY < 200-day MA, go to 100% cash.",
+    "description": "Rank SPUS universe (SP Funds S&P 500 Sharia Industry Exclusions ETF constituents) by cumulative return from t-10 months to t-1 month (skip last month). Buy top K equal-weighted. Hold for 1 month. If SPY < 200-day MA, go to 100% cash.",
     "lookback_months": 9,
     "skip_months": 1
   },
   "ranked_stocks": [
     {
       "rank": 1,
-      "ticker": "WDC",
-      "momentum_pct": 244.58,
-      "price_usd": 343.43
-    },
-    {
-      "rank": 2,
       "ticker": "MU",
       "momentum_pct": 210.0,
       "price_usd": 420.59
     },
     {
-      "rank": 3,
+      "rank": 2,
       "ticker": "TER",
       "momentum_pct": 176.56,
       "price_usd": 367.99
     },
     {
-      "rank": 4,
+      "rank": 3,
       "ticker": "ALB",
       "momentum_pct": 167.5,
       "price_usd": 173.64
     },
     {
-      "rank": 5,
+      "rank": 4,
       "ticker": "STX",
       "momentum_pct": 151.39,
       "price_usd": 503.13
     },
     {
-      "rank": 6,
+      "rank": 5,
       "ticker": "LRCX",
       "momentum_pct": 126.37,
       "price_usd": 263.66
     },
     {
-      "rank": 7,
-      "ticker": "APA",
-      "momentum_pct": 124.59,
-      "price_usd": 38.63
-    },
-    {
-      "rank": 8,
-      "ticker": "INTC",
-      "momentum_pct": 122.88,
-      "price_usd": 62.38
-    },
-    {
-      "rank": 9,
+      "rank": 6,
       "ticker": "GLW",
       "momentum_pct": 117.02,
       "price_usd": 171.24
     },
     {
-      "rank": 10,
-      "ticker": "WBD",
-      "momentum_pct": 108.5,
-      "price_usd": 27.44
-    },
-    {
-      "rank": 11,
+      "rank": 7,
       "ticker": "AMAT",
       "momentum_pct": 90.98,
       "price_usd": 399.49
     },
     {
-      "rank": 12,
-      "ticker": "DOW",
-      "momentum_pct": 86.29,
-      "price_usd": 39.01
-    },
-    {
-      "rank": 13,
-      "ticker": "VLO",
-      "momentum_pct": 82.19,
-      "price_usd": 238.82
-    },
-    {
-      "rank": 14,
+      "rank": 8,
       "ticker": "HAL",
       "momentum_pct": 77.35,
       "price_usd": 37.59
     },
     {
-      "rank": 15,
+      "rank": 9,
       "ticker": "NEM",
       "momentum_pct": 75.76,
       "price_usd": 120.9
     },
     {
-      "rank": 16,
-      "ticker": "KEYS",
-      "momentum_pct": 72.27,
-      "price_usd": 324.18
-    },
-    {
-      "rank": 17,
-      "ticker": "MRNA",
-      "momentum_pct": 71.85,
-      "price_usd": 50.96
-    },
-    {
-      "rank": 18,
+      "rank": 10,
       "ticker": "KLAC",
       "momentum_pct": 68.37,
       "price_usd": 1737.28
     },
     {
-      "rank": 19,
-      "ticker": "CAT",
-      "momentum_pct": 62.59,
-      "price_usd": 790.66
-    },
-    {
-      "rank": 20,
-      "ticker": "FDX",
-      "momentum_pct": 61.87,
-      "price_usd": 374.08
-    },
-    {
-      "rank": 21,
-      "ticker": "XPO",
-      "momentum_pct": 61.73,
-      "price_usd": 212.74
-    },
-    {
-      "rank": 22,
+      "rank": 11,
       "ticker": "ROST",
       "momentum_pct": 59.78,
       "price_usd": 221.16
     },
     {
-      "rank": 23,
-      "ticker": "VTRS",
-      "momentum_pct": 59.5,
-      "price_usd": 13.47
-    },
-    {
-      "rank": 24,
+      "rank": 12,
       "ticker": "MRK",
       "momentum_pct": 57.99,
       "price_usd": 121.42
     },
     {
-      "rank": 25,
+      "rank": 13,
       "ticker": "XOM",
       "momentum_pct": 55.76,
       "price_usd": 152.51
     },
     {
-      "rank": 26,
+      "rank": 14,
       "ticker": "SLB",
       "momentum_pct": 55.38,
       "price_usd": 51.92
     },
     {
-      "rank": 27,
+      "rank": 15,
       "ticker": "MPWR",
       "momentum_pct": 54.56,
       "price_usd": 1353.85
     },
     {
-      "rank": 28,
+      "rank": 16,
       "ticker": "DD",
       "momentum_pct": 54.45,
       "price_usd": 47.25
     },
     {
-      "rank": 29,
+      "rank": 17,
       "ticker": "DVN",
       "momentum_pct": 54.31,
       "price_usd": 47.79
-    },
-    {
-      "rank": 30,
-      "ticker": "TRGP",
-      "momentum_pct": 52.43,
-      "price_usd": 243.09
     }
   ]
 }
