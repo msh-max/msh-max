@@ -9,43 +9,36 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 
-# S&P 500 Shariah-compliant subset
-# Excludes: banks, insurance, asset managers, exchanges, credit cards (riba),
-#           alcohol, tobacco, gambling, defense/weapons, conventional REITs.
-# This is a CONSERVATIVE business screen. You should still cross-check each
-# holding against a Shariah screening service (Zoya, Islamicly, Wahed) because
-# financial-ratio screens (debt/AR/interest income) change quarterly.
+# SPUS ETF (SP Funds S&P 500 Sharia Industry Exclusions ETF) holdings.
+# Source: sp-funds.com — updated May 2026. ~221 constituents.
+# The index excludes: financials (banks, insurance, asset managers, exchanges),
+# defense/aerospace, alcohol, tobacco, gambling, and applies debt/interest-income
+# ratio screens quarterly. Cross-check individual holdings at Zoya or Islamicly
+# before buying, as financial-ratio compliance can change each quarter.
 HALAL_SP500 = [
-    # Technology
-    "AAPL","MSFT","NVDA","AVGO","ORCL","CRM","ADBE","CSCO","ACN","AMD","INTC","QCOM","TXN","IBM","NOW","INTU","ADI","MU","AMAT","LRCX",
-    "KLAC","MCHP","ADSK","SNPS","CDNS","ANET","FTNT","PANW","TEL","GLW","NXPI","WDC","STX","HPQ","HPE","DELL","NTAP","JNPR",
-    "FFIV","FSLR","ENPH","ON","MPWR","SWKS","QRVO","TER","TYL","PTC","CDW","CTSH","EPAM","GRMN","AKAM","KEYS","ANSS","IT","GEN","JBL",
-    # Communication & Media (conservative: include mainstream)
-    "GOOGL","GOOG","META","NFLX","DIS","CMCSA","CHTR","TMUS","T","VZ","EA","TTWO","OMC","IPG","LYV","WBD","FOX","FOXA","NWS","NWSA","PARA",
-    # Consumer Discretionary (non-gambling, non-alcohol)
-    "AMZN","TSLA","HD","MCD","NKE","LOW","SBUX","TJX","BKNG","CMG","ORLY","AZO","GM","F","LULU","ROST","DHI","LEN","NVR","PHM","YUM",
-    "DPZ","DRI","MAR","HLT","ABNB","GRMN","POOL","TSCO","BBY","ULTA","RL","TPR","CCL","RCL","NCLH","APTV","BWA","LKQ",
-    # Consumer Staples (non-alcohol, non-tobacco)
-    "WMT","COST","PG","KO","PEP","MDLZ","CL","KMB","GIS","K","HSY","MKC","CLX","CHD","MNST","KDP","KHC","SJM","CAG","CPB","HRL","TSN",
-    "ADM","SYY","KR","DG","DLTR","WBA","CVS","ELV",
-    # Healthcare
-    "UNH","JNJ","LLY","ABBV","PFE","MRK","TMO","ABT","DHR","AMGN","BMY","GILD","MDT","ISRG","SYK","REGN","VRTX","ZTS","BSX","ELV",
-    "CI","HUM","CNC","MOH","HCA","ZBH","BDX","EW","DXCM","IDXX","IQV","A","WAT","MTD","BIO","CRL","HOLX","ALGN","STE","COO",
-    "LH","DGX","RMD","BAX","BIIB","INCY","MRNA","TECH","RVTY","HSIC","PODD","DVA","UHS","VTRS","SOLV",
-    # Industrials (non-defense heavy)
-    "CAT","DE","HON","UPS","UNP","GE","ETN","LIN","EMR","ITW","CSX","NSC","WM","RSG","FDX","PH","CMI","PCAR",
-    "ROK","JCI","OTIS","CARR","FAST","VMC","MLM","URI","PWR","GWW","XYL","ROP","DOV","IR","IEX","PNR","SNA","LECO","TT","HWM",
-    "LUV","DAL","AAL","UAL","HEI","CHRW","EXPD","JBHT","ODFL","XPO","WAB","TRMB","ZBRA","ALLE","AOS","DAY","MAS","GNRC","TDY",
-    # Materials (excluding defense)
-    "LIN","SHW","APD","ECL","FCX","NEM","NUE","DD","DOW","PPG","MLM","VMC","CE","CF","MOS","STLD","IFF","ALB","FMC","EMN","AVY","PKG","IP","AMCR","BALL","SEE",
-    # Energy
-    "XOM","CVX","COP","EOG","SLB","PSX","MPC","VLO","OXY","WMB","KMI","OKE","HAL","BKR","DVN","FANG","HES","APA","CTRA","TRGP","EQT",
-    # Utilities (no conventional REIT exposure)
-    "NEE","SO","DUK","SRE","AEP","D","CEG","XEL","EXC","PCG","PEG","ED","WEC","ES","EIX","DTE","FE","AEE","PPL","CMS","CNP","AES",
-    "ATO","LNT","NRG","EVRG","NI","PNW","AWK","WTRG","CMS","ETR",
+    "NVDA","AAPL","MSFT","GOOGL","AVGO","TSLA","LLY","XOM","MU","AMD",
+    "JNJ","ABBV","CSCO","PG","HD","LRCX","AMAT","GEV","ORCL","MRK",
+    "TXN","LIN","KLAC","PEP","IBM","ADI","QCOM","TMO","ANET","TJX",
+    "GILD","CRM","ISRG","UNP","ABT","COP","UBER","SNDK","WELL","STX",
+    "PANW","BKNG","LOW","PLD","GLW","VRT","NEM","DHR","ACN","CRWD",
+    "SYK","PWR","VRTX","TT","MDT","EQIX","ADBE","MCK","CEG","NOW",
+    "CDNS","JCI","CMI","SNPS","WM","BSX","ORLY","SLB","CSX","FCX",
+    "CRH","EMR","UPS","MMM","MDLZ","SHW","EOG","NXPI","CIEN","ROST",
+    "MPWR","CL","NSC","BKR","ITW","REGN","ECL","APD","DASH","FIX",
+    "TEL","TGT","COHR","AZO","URI","CTAS","COR","MNST","CARR","TER",
+    "CTVA","FAST","MCHP","NKE","NUE","FTNT","ADSK","EW","GWW","EBAY",
+    "CAH","IDXX","ROK","WAB","BDX","DHI","ON","RSG","GRMN","HAL",
+    "ROP","ODFL","VMC","MLM","A","KVUE","ADM","DVN","JBL","KMB",
+    "RMD","OTIS","DOV","TPR","STLD","CPRT","CTSH","WAT","CTRA","IR",
+    "EXPE","HUBB","HSY","GEHC","XYL","BIIB","WDAY","ULTA","PHM","PPG",
+    "AVB","TPL","CHD","DXCM","VLTO","CHRW","LH","FICO","EFX","MTD",
+    "VRSN","FSLR","EXPD","WSM","DD","WST","CF","STE","JBHT","NTAP",
+    "ALB","EL","PKG","TRMB","CDW","PTC","ROL","FFIV","WY","LII",
+    "TSCO","LULU","MAS","SMCI","CSGP","INCY","NDSN","MKC","GNRC","TYL",
+    "MAA","RL","GPC","COO","AVY","DECK","PNR","IEX","AKAM","TECH",
+    "ALLE","PODD","IT","TTD","RVTY","BBY","ZBRA","CLX","CPT","ALGN",
+    "GDDY","SWKS","BLDR","CRL","POOL","AOS","EPAM",
 ]
-# Deduplicate, preserve order
-HALAL_SP500 = list(dict.fromkeys(HALAL_SP500))
 
 print(f"Shariah-compliant universe: {len(HALAL_SP500)} tickers")
 
@@ -138,7 +131,7 @@ def main():
         },
         "strategy": {
             "name": "9-1 Month Momentum",
-            "description": "Rank S&P 500 (Shariah-compliant only) by cumulative return from t-10 months to t-1 month (skip last month). Buy top K equal-weighted. Hold for 1 month. If SPY < 200-day MA, go to 100% cash.",
+            "description": "Rank SPUS universe (SP Funds S&P 500 Sharia Industry Exclusions ETF constituents) by cumulative return from t-10 months to t-1 month (skip last month). Buy top K equal-weighted. Hold for 1 month. If SPY < 200-day MA, go to 100% cash.",
             "lookback_months": 9,
             "skip_months": 1,
         },

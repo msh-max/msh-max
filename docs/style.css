@@ -340,6 +340,27 @@ input[type="range"]::-moz-range-thumb {
 }
 .disclaimer a { color: var(--accent); text-decoration: none; }
 
+.refresh-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  border: 1.5px solid var(--card-border);
+  border-radius: 10px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+.refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+.refresh-btn:active { transform: scale(0.98); }
+.refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.refresh-btn.loading { color: var(--warning); border-color: var(--warning); }
+.refresh-btn.success { color: var(--accent); border-color: var(--accent); }
+.refresh-btn.error { color: var(--danger); border-color: var(--danger); }
+
 footer {
   text-align: center;
   padding: 24px 16px 16px;

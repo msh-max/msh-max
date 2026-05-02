@@ -12,7 +12,7 @@
 <body>
   <header class="topbar">
     <h1>Halal Momentum</h1>
-    <div class="subtitle">9-1 Month S&amp;P 500 Strategy</div>
+    <div class="subtitle">9-1 Month SPUS Strategy</div>
   </header>
 
   <main>
@@ -59,13 +59,14 @@
       <div class="info-row"><span>Signal Date</span><span id="signal-date">-</span></div>
       <div class="info-row"><span>Last Updated</span><span id="last-updated">-</span></div>
       <div class="info-row"><span>Universe Size</span><span id="universe-size">-</span></div>
+      <button id="refresh-btn" class="refresh-btn">↻ Refresh Data</button>
     </section>
 
     <!-- Disclaimer -->
     <section class="disclaimer">
       <h3>Important Disclaimers</h3>
       <ul>
-        <li><strong>Shariah screening:</strong> This list applies a business-activity screen (excludes banks, insurance, alcohol, tobacco, gambling, defense, conventional REITs). Verify each holding against <a href="https://zoya.finance/" target="_blank">Zoya</a>, <a href="https://islamicly.com/" target="_blank">Islamicly</a>, or <a href="https://wahedinvest.com/" target="_blank">Wahed</a> before buying, as financial-ratio screens (debt/interest income) update quarterly.</li>
+        <li><strong>Shariah screening:</strong> Universe is sourced directly from the <strong>SPUS ETF</strong> (SP Funds S&amp;P 500 Sharia Industry Exclusions ETF) — updated May 2026. It excludes banks, insurance, defense, alcohol, tobacco, and gambling, with quarterly debt/interest-income ratio screens. Still verify each holding against <a href="https://zoya.finance/" target="_blank">Zoya</a> or <a href="https://islamicly.com/" target="_blank">Islamicly</a> before buying, as compliance status can change.</li>
         <li><strong>Trend filter:</strong> If SPY is below its 200-day moving average, the strategy recommends 100% cash. The button below will still show top K but you should NOT invest until status is green.</li>
         <li><strong>Monthly rebalance:</strong> Rebalance on the last trading day of each month. Sell anything not in the new top K, buy anything newly added.</li>
         <li><strong>Past performance ≠ future results.</strong> Backtested Sharpe 0.52, CAGR 43%, Max DD -14.7%.</li>
@@ -74,7 +75,7 @@
   </main>
 
   <footer>
-    <div>9-1 Momentum · Shariah-screened S&amp;P 500</div>
+    <div>9-1 Momentum · SPUS Universe · Shariah-screened</div>
   </footer>
 
   <script src="app.js"></script>

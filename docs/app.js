@@ -7,7 +7,6 @@ const $ = id => document.getElementById(id);
 
 async function loadData() {
   try {
-    // cache-bust so users always see latest
     const resp = await fetch("data.json?t=" + Date.now());
     if (!resp.ok) throw new Error("Failed to fetch data.json");
     data = await resp.json();
@@ -16,6 +15,32 @@ async function loadData() {
     console.error(err);
     $("status-value").textContent = "Error loading data";
     $("status-detail").textContent = err.message;
+  }
+}
+
+async function refreshData() {
+  const btn = $("refresh-btn");
+  btn.disabled = true;
+  btn.className = "refresh-btn loading";
+  btn.textContent = "↻ Refreshing...";
+  try {
+    const resp = await fetch("data.json?t=" + Date.now());
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    data = await resp.json();
+    render();
+    if (!$("results").classList.contains("hidden")) calculate();
+    btn.className = "refresh-btn success";
+    btn.textContent = "✓ Data Updated";
+  } catch (err) {
+    console.error(err);
+    btn.className = "refresh-btn error";
+    btn.textContent = "✗ Refresh Failed";
+  } finally {
+    setTimeout(() => {
+      btn.textContent = "↻ Refresh Data";
+      btn.className = "refresh-btn";
+      btn.disabled = false;
+    }, 2500);
   }
 }
 
@@ -140,4 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
   $("amount").addEventListener("keydown", e => {
     if (e.key === "Enter") calculate();
   });
+
+  $("refresh-btn").addEventListener("click", refreshData);
 });
