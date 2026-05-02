@@ -9,8 +9,7 @@ const OWNER    = "msh-max";
 const REPO     = "msh-max";
 const BRANCH   = "claude/sp500-momentum-comparison-x5jI4";
 const WORKFLOW = "update-data.yml";
-// Poll raw GitHub after workflow runs — bypasses Pages CDN cache
-const RAW_DATA = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/docs/data.json`;
+const API      = `https://api.github.com/repos/${OWNER}/${REPO}`;
 
 // ── Data loading ──────────────────────────────────────────────────────────────
 
@@ -27,7 +26,7 @@ async function loadData() {
   }
 }
 
-// ── Live refresh (triggers GitHub Actions, polls for result) ──────────────────
+// ── Live refresh ──────────────────────────────────────────────────────────────
 
 async function refreshData() {
   const btn = $("refresh-btn");
@@ -38,69 +37,94 @@ async function refreshData() {
       "One-time setup: enter a GitHub Personal Access Token.\n\n" +
       "Required scope: Actions → Read & Write\n" +
       "Create one at:  github.com/settings/tokens/new\n\n" +
-      "It will be saved in your browser for future use."
+      "It will be saved locally in your browser."
     );
     if (!token) return;
-    localStorage.setItem("gh_pat", token.trim());
     token = token.trim();
+    localStorage.setItem("gh_pat", token);
   }
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: "application/vnd.github+json",
+  };
 
   setBtn(btn, "loading", "↻ Triggering update...", true);
 
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,
+    // 1. Trigger the workflow
+    const triggerRes = await fetch(
+      `${API}/actions/workflows/${WORKFLOW}/dispatches`,
       {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github+json",
-          "Content-Type": "application/json",
-        },
+        headers: { ...headers, "Content-Type": "application/json" },
         body: JSON.stringify({ ref: BRANCH }),
       }
     );
 
-    if (res.status === 401 || res.status === 403) {
+    if (triggerRes.status === 401 || triggerRes.status === 403) {
       localStorage.removeItem("gh_pat");
-      throw new Error("Invalid token — cleared. Click Refresh to re-enter.");
+      throw new Error("Invalid token — cleared. Tap Refresh to re-enter.");
     }
-    if (res.status !== 204) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body.message || `GitHub API error ${res.status}`);
+    if (triggerRes.status !== 204) {
+      const b = await triggerRes.json().catch(() => ({}));
+      throw new Error(b.message || `GitHub API error ${triggerRes.status}`);
     }
 
-    // Workflow is now queued — poll raw GitHub until last_updated changes
-    const originalDate = data?.last_updated ?? "";
-    const started = Date.now();
-    const timeout = 6 * 60 * 1000;  // 6 minutes max
-    const interval = 12 * 1000;     // check every 12 seconds
+    // 2. Wait for the run to appear in the API (~5-10s)
+    setBtn(btn, "loading", "⏳ Queued — waiting for runner...", true);
+    await sleep(10000);
 
-    while (Date.now() - started < timeout) {
-      await sleep(interval);
-      const elapsed = Math.round((Date.now() - started) / 1000);
-      setBtn(btn, "loading", `⏳ Updating... ${elapsed}s`, true);
+    // 3. Find the latest workflow_dispatch run on this branch
+    const runsRes = await fetch(
+      `${API}/actions/workflows/${WORKFLOW}/runs?per_page=5&branch=${encodeURIComponent(BRANCH)}&event=workflow_dispatch`,
+      { headers }
+    );
+    if (!runsRes.ok) throw new Error("Could not list workflow runs");
+    const { workflow_runs } = await runsRes.json();
+    if (!workflow_runs?.length) throw new Error("No run found — check GitHub Actions tab");
+    const runId = workflow_runs[0].id;
 
-      try {
-        const r = await fetch(RAW_DATA + "?t=" + Date.now());
-        if (!r.ok) continue;
-        const fresh = await r.json();
-        if (fresh.last_updated !== originalDate) {
-          data = fresh;
-          render();
-          if (!$("results").classList.contains("hidden")) calculate();
-          setBtn(btn, "success", "✓ Everything Updated!");
-          setTimeout(() => resetBtn(btn), 3000);
-          return;
+    // 4. Poll run status until complete (up to 10 min)
+    const deadline = Date.now() + 10 * 60 * 1000;
+
+    while (Date.now() < deadline) {
+      await sleep(10000);
+      const r = await fetch(`${API}/actions/runs/${runId}`, { headers });
+      if (!r.ok) continue;
+      const run = await r.json();
+      const elapsed = Math.round((Date.now() - (deadline - 10 * 60 * 1000)) / 1000);
+
+      if (run.status === "completed") {
+        if (run.conclusion !== "success") {
+          throw new Error(`Workflow ${run.conclusion} — check GitHub Actions tab`);
         }
-      } catch { /* network hiccup — keep polling */ }
+        // 5. Fetch the new data.json via Contents API (no CDN cache)
+        setBtn(btn, "loading", "⏳ Loading fresh data...", true);
+        const fileRes = await fetch(
+          `${API}/contents/docs/data.json?ref=${encodeURIComponent(BRANCH)}`,
+          { headers }
+        );
+        if (!fileRes.ok) throw new Error("Could not fetch updated data.json");
+        const file = await fileRes.json();
+        data = JSON.parse(atob(file.content.replace(/\n/g, "")));
+        render();
+        if (!$("results").classList.contains("hidden")) calculate();
+        setBtn(btn, "success", "✓ Everything Updated!");
+        setTimeout(() => resetBtn(btn), 3000);
+        return;
+      }
+
+      // Show live status while waiting
+      const label = run.status === "in_progress" ? "Running" : "Queued";
+      setBtn(btn, "loading", `⏳ ${label}... ${elapsed}s`, true);
     }
 
     throw new Error("Timed out — check GitHub Actions tab for status.");
 
   } catch (err) {
     setBtn(btn, "error", "✗ " + err.message);
-    setTimeout(() => resetBtn(btn), 5000);
+    setTimeout(() => resetBtn(btn), 6000);
   }
 }
 
@@ -121,11 +145,13 @@ function render() {
   if (spy.above_ma200) {
     statusCard.className = "status-card green";
     $("status-value").textContent = `ABOVE by +${spy.percent_diff.toFixed(2)}%`;
-    $("status-detail").innerHTML = `SPY $${spy.price.toFixed(2)} · 200MA $${spy.ma200.toFixed(2)} · <strong>OK to invest</strong>`;
+    $("status-detail").innerHTML =
+      `SPY $${spy.price.toFixed(2)} · 200MA $${spy.ma200.toFixed(2)} · <strong>OK to invest</strong>`;
   } else {
     statusCard.className = "status-card red";
     $("status-value").textContent = `BELOW by ${spy.percent_diff.toFixed(2)}%`;
-    $("status-detail").innerHTML = `SPY $${spy.price.toFixed(2)} · 200MA $${spy.ma200.toFixed(2)} · <strong>STAY IN CASH</strong>`;
+    $("status-detail").innerHTML =
+      `SPY $${spy.price.toFixed(2)} · 200MA $${spy.ma200.toFixed(2)} · <strong>STAY IN CASH</strong>`;
   }
 
   $("signal-date").textContent   = data.signal_date;
@@ -187,11 +213,9 @@ function updateConverted() {
   const raw = parseFloat($("amount").value);
   const out = $("converted");
   if (!raw || raw <= 0) { out.textContent = ""; return; }
-  if (currency === "USD") {
-    out.textContent = `≈ ${(raw * data.usd_to_sar).toLocaleString(undefined, {maximumFractionDigits: 2})} SAR`;
-  } else {
-    out.textContent = `≈ $${(raw / data.usd_to_sar).toLocaleString(undefined, {maximumFractionDigits: 2})} USD`;
-  }
+  out.textContent = currency === "USD"
+    ? `≈ ${(raw * data.usd_to_sar).toLocaleString(undefined, {maximumFractionDigits: 2})} SAR`
+    : `≈ $${(raw / data.usd_to_sar).toLocaleString(undefined, {maximumFractionDigits: 2})} USD`;
 }
 
 function setCurrency(cur) {
