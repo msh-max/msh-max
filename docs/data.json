@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-08-21 22:19:07 UTC",
+  "last_updated": "2026-08-24 22:20:20 UTC",
   "signal_date": "2026-07-31",
-  "latest_price_date": "2026-08-21",
+  "latest_price_date": "2026-08-24",
   "universe_size": 217,
   "usd_to_sar": 3.75,
   "spy": {
-    "price": 765.72,
-    "ma200": 704.98,
+    "price": 763.47,
+    "ma200": 705.45,
     "above_ma200": true,
-    "percent_diff": 8.62
+    "percent_diff": 8.22
   },
   "strategy": {
     "name": "9-1 Month Momentum",
@@ -21,181 +21,181 @@
       "rank": 1,
       "ticker": "SNDK",
       "momentum_pct": 444.08,
-      "price_usd": 1596.08
+      "price_usd": 1493.12
     },
     {
       "rank": 2,
       "ticker": "MU",
       "momentum_pct": 248.37,
-      "price_usd": 966.78
+      "price_usd": 910.43
     },
     {
       "rank": 3,
       "ticker": "STX",
       "momentum_pct": 210.99,
-      "price_usd": 850.0
+      "price_usd": 794.65
     },
     {
       "rank": 4,
       "ticker": "AMD",
       "momentum_pct": 118.89,
-      "price_usd": 473.25
+      "price_usd": 456.74
     },
     {
       "rank": 5,
       "ticker": "TER",
       "momentum_pct": 102.31,
-      "price_usd": 375.74
+      "price_usd": 364.9
     },
     {
       "rank": 6,
       "ticker": "AMAT",
       "momentum_pct": 101.76,
-      "price_usd": 492.32
+      "price_usd": 484.19
     },
     {
       "rank": 7,
       "ticker": "FTNT",
       "momentum_pct": 99.62,
-      "price_usd": 153.51
+      "price_usd": 151.99
     },
     {
       "rank": 8,
       "ticker": "LRCX",
       "momentum_pct": 88.5,
-      "price_usd": 314.0
+      "price_usd": 310.17
     },
     {
       "rank": 9,
       "ticker": "CIEN",
       "momentum_pct": 84.64,
-      "price_usd": 395.79
+      "price_usd": 371.95
     },
     {
       "rank": 10,
       "ticker": "FIX",
       "momentum_pct": 77.21,
-      "price_usd": 1655.61
+      "price_usd": 1609.69
     },
     {
       "rank": 11,
       "ticker": "PANW",
       "momentum_pct": 74.53,
-      "price_usd": 357.87
+      "price_usd": 350.9
     },
     {
       "rank": 12,
       "ticker": "FFIV",
       "momentum_pct": 68.33,
-      "price_usd": 384.63
+      "price_usd": 379.04
     },
     {
       "rank": 13,
       "ticker": "TXN",
       "momentum_pct": 66.62,
-      "price_usd": 264.36
+      "price_usd": 258.94
     },
     {
       "rank": 14,
       "ticker": "GEV",
       "momentum_pct": 65.42,
-      "price_usd": 956.85
+      "price_usd": 942.1
     },
     {
       "rank": 15,
       "ticker": "GLW",
       "momentum_pct": 64.75,
-      "price_usd": 149.84
+      "price_usd": 145.55
     },
     {
       "rank": 16,
       "ticker": "NUE",
       "momentum_pct": 62.82,
-      "price_usd": 243.63
+      "price_usd": 244.64
     },
     {
       "rank": 17,
       "ticker": "TGT",
       "momentum_pct": 62.59,
-      "price_usd": 165.44
+      "price_usd": 169.89
     },
     {
       "rank": 18,
       "ticker": "ON",
       "momentum_pct": 62.44,
-      "price_usd": 74.21
+      "price_usd": 71.93
     },
     {
       "rank": 19,
       "ticker": "NTAP",
       "momentum_pct": 62.1,
-      "price_usd": 192.27
+      "price_usd": 186.86
     },
     {
       "rank": 20,
       "ticker": "CF",
       "momentum_pct": 60.57,
-      "price_usd": 129.6
+      "price_usd": 129.24
     },
     {
       "rank": 21,
       "ticker": "COHR",
       "momentum_pct": 60.05,
-      "price_usd": 289.52
+      "price_usd": 275.49
     },
     {
       "rank": 22,
       "ticker": "ODFL",
       "momentum_pct": 57.53,
-      "price_usd": 206.47
+      "price_usd": 201.48
     },
     {
       "rank": 23,
       "ticker": "JBHT",
       "momentum_pct": 56.82,
-      "price_usd": 275.45
+      "price_usd": 259.88
     },
     {
       "rank": 24,
       "ticker": "KLAC",
       "momentum_pct": 55.93,
-      "price_usd": 183.99
+      "price_usd": 181.57
     },
     {
       "rank": 25,
       "ticker": "MPWR",
       "momentum_pct": 54.44,
-      "price_usd": 1316.28
+      "price_usd": 1285.03
     },
     {
       "rank": 26,
       "ticker": "CSCO",
       "momentum_pct": 52.95,
-      "price_usd": 111.04
+      "price_usd": 110.23
     },
     {
       "rank": 27,
       "ticker": "GRMN",
       "momentum_pct": 52.31,
-      "price_usd": 294.85
+      "price_usd": 291.25
     },
     {
       "rank": 28,
       "ticker": "STLD",
       "momentum_pct": 50.96,
-      "price_usd": 228.68
+      "price_usd": 229.27
     },
     {
       "rank": 29,
       "ticker": "CRWD",
       "momentum_pct": 49.94,
-      "price_usd": 191.95
+      "price_usd": 190.68
     },
     {
       "rank": 30,
       "ticker": "JBL",
       "momentum_pct": 49.6,
-      "price_usd": 313.21
+      "price_usd": 304.89
     }
   ]
 }
