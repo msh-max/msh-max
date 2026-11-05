@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-11-04 01:51:14 UTC",
+  "last_updated": "2026-11-05 01:57:55 UTC",
   "signal_date": "2026-10-31",
-  "latest_price_date": "2026-11-03",
+  "latest_price_date": "2026-11-04",
   "universe_size": 217,
   "usd_to_sar": 3.75,
   "spy": {
-    "price": 752.1,
-    "ma200": 726.31,
+    "price": 754.35,
+    "ma200": 726.65,
     "above_ma200": true,
-    "percent_diff": 3.55
+    "percent_diff": 3.81
   },
   "strategy": {
     "name": "9-1 Month Momentum",
